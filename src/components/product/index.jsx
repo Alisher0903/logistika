@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react"
 import {
   Button,
+  Col,
   Container,
   Input,
   Label,
@@ -9,6 +10,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Row,
   Table
 } from "reactstrap"
 import { config, url } from "../api";
@@ -19,6 +21,7 @@ const Product = () => {
 
   const [addproductModal, setProductModal] = useState(false);
   const [userGetMe, setUserGetMe] = useState([]);
+  const [productDtoS, setProductDtoS] = useState([]);
 
   useEffect(() => {
     getProduct();
@@ -29,7 +32,10 @@ const Product = () => {
   const getProduct = () => {
     let userId = sessionStorage.getItem("userId")
     axios.get(url + "user/getMe/" + userId, config)
-      .then(res => setUserGetMe(res.data))
+      .then(res => {
+        setUserGetMe(res.data.body);
+        setProductDtoS(res.data.body.productDtoS);
+      })
       .catch(() => console.log("getMe kelmadi"))
   }
 
@@ -49,16 +55,71 @@ const Product = () => {
             }}
             className='w-25 float-end' placeholder='🔍Search..' />
 
+          <Row className="w-100 mt-5">
+            <Col className="col-12 col-md-6 pe-0 pe-md-4">
+              <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom: "1px dotted",
+                paddingBottom: ".5rem",
+                fontSize: "1.2rem",
+                fontWeight: "700"
+              }}>
+                <p style={{ marginBottom: "0" }}>First Name:</p>
+                <p style={{ marginBottom: "0" }}>{userGetMe.name}</p>
+              </div>
+              <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom: "1px dotted",
+                paddingBottom: ".5rem",
+                fontSize: "1.2rem",
+                fontWeight: "700"
+              }}>
+                <p style={{ marginBottom: "0" }}>Phone Number:</p>
+                <p style={{ marginBottom: "0" }}>{userGetMe.phoneNumber}</p>
+              </div>
+            </Col>
+            <Col className="col-12 col-md-6 ps-0 pe-0 ps-md-4">
+              <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom: "1px dotted",
+                paddingBottom: ".5rem",
+                fontSize: "1.2rem",
+                fontWeight: "700"
+              }}>
+                <p style={{ marginBottom: "0" }}>Id Number:</p>
+                <p style={{ marginBottom: "0" }}>{userGetMe.idNumber}</p>
+              </div>
+              <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom: "1px dotted",
+                paddingBottom: ".5rem",
+                fontSize: "1.2rem",
+                fontWeight: "700"
+              }}>
+                <p style={{ marginBottom: "0" }}>Password:</p>
+                <p style={{ marginBottom: "0" }}>{userGetMe.password}</p>
+              </div>
+            </Col>
+          </Row>
+
           <Table
             style={{
-              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
+              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+              marginTop: "3rem"
             }}
             bordered
             outline
             striped
             scrollable
-            hover
-            className='mt-5'>
+            hover>
             <thead className="table-dark">
               <tr className="text-center">
                 <th>№</th>
@@ -69,26 +130,34 @@ const Product = () => {
                 <th>Measure</th>
                 <th>Measure Count</th>
                 <th>Address</th>
-                <th>Action</th>
+                <th colSpan="2">Action</th>
               </tr>
             </thead>
             <tbody className="text-center user-tbody">
-              <tr>
-                <td>1</td>
-                <td>Name</td>
-                <td>idNumber</td>
-                <td>transport</td>
-                <td>productStatus</td>
-                <td>measure</td>
-                <td>measureCount</td>
-                <td>address</td>
-                <td>
-                  <Button
-                    color="warning"
-                    className="px-4 py-1 my-1"
-                    outline>Edit</Button>
-                </td>
-              </tr>
+              {productDtoS && productDtoS.map((item, i) =>
+                <tr key={item.id}>
+                  <td>{i + 1}</td>
+                  <td>{item.name}</td>
+                  <td>{item.idNumber}</td>
+                  <td>{item.transport}</td>
+                  <td>{item.productStatus}</td>
+                  <td>{item.measure}</td>
+                  <td>{item.measureCount}</td>
+                  <td>{item.address}</td>
+                  <td>
+                    <Button
+                      color="warning"
+                      className="px-4 py-1 my-1"
+                      outline>Edit</Button>
+                  </td>
+                  <td>
+                    <Button
+                      color="info"
+                      className="px-4 py-1 my-1"
+                      outline>Location</Button>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </Table>
 
