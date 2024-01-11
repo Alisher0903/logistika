@@ -28,7 +28,7 @@ const Login = () => {
         if (res.data.message === "ROLE_ADMIN")
           setRole("/user");
         else if (res.data.message === "ROLE_USER")
-          setRole("/product");
+          setRole("/about");
       })
       .catch(() => {
         toast.error("Raqam yoki parol xato!");

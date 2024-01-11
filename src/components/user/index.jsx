@@ -55,7 +55,7 @@ const User = () => {
 
     let addData = {
       name: byIdObj("userName").value,
-      idNumber : byIdObj("userIdNumber").value,
+      idNumber: byIdObj("idNumber").value,
       phoneNumber: byIdObj("userPhoneNumber").value,
       password: byIdObj("userpassword").value
     }
@@ -92,7 +92,7 @@ const User = () => {
     // setLoading(true);
     let editData = {
       name: byIdObj("userName").value,
-      idNumber : byIdObj("userIdNumber").value,
+      idNumber: byIdObj("idNumber").value,
       password: byIdObj("userpassword").value,
       phoneNumber: byIdObj("userPhoneNumber").value,
 
@@ -146,7 +146,7 @@ const User = () => {
               <tr className='text-center'>
                 <th>#</th>
                 <th>Name</th>
-                <th>IdNumber</th>
+                <th>Id Number</th>
                 <th>Phone Number</th>
                 <th>Password</th>
                 <th colSpan={2}>Action</th>
@@ -217,6 +217,8 @@ const User = () => {
               </select>
               <Label className='mb-0 ms-1 mt-3' for='userName'>Name</Label>
               <Input type='text' id='userName' placeholder='Name' />
+              <Label className='mb-0 ms-1 mt-3' for='idNumber'>Id Number</Label>
+              <Input type='text' id='idNumber' placeholder='Id Number' />
               <Label className='mb-0 ms-1 mt-3' for='userPhoneNumber'>PhoneNumber</Label>
               <Input type='number' id='userPhoneNumber' placeholder='PhoneNumber' />
               <Label className='mb-0 ms-1 mt-3' for='userpassword'>Password</Label>
