@@ -1,144 +1,141 @@
-import axios, { Axios } from 'axios';
-import React, { useEffect, useState } from 'react'
-import { toast } from 'react-toastify';
-import { Button, Container, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Spinner, Table } from 'reactstrap';
-import { byIdObj, url } from '../api';
+import axios from "axios";
+import { useEffect, useState } from "react"
+import { Button, Container, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Table } from "reactstrap"
+import { config, url } from "../api";
 
+const Product = () =>{
+     const [user, setUser] = useState([]);
+     const [product, setProduct] = useState([]);
+     const [editProduct, setEditProduct] = useState([]);
+     const [addproductModal, setProductModal] = useState(false);
+     
+     useEffect(() => {
+       getUser();
+     },[])
+     const openProductModal = () =>setProductModal(!addproductModal)
 
-const Product = () => {
-  const [users, setUser] = useState([]);
-  const [user, setUserObj] = useState('');
-  const [addModal, setAddModal] = useState(false);
-  const [editModal, setEditModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+     const getUser = () => {
+      axios.get(`${url}user`, config)
+        .then(res => setUser(res.data.object))
+        .catch(() => console.log("user kelmadi"))
+    }
+    console.log(user);
 
+     const getPro = () =>{
+      axios.post(`${url}product`, config)
+      .then(res => setProduct(res.data.body))
+      .catch(() => console.log("product kelmadi"))
+     }
 
-  const openAddModal = () => setAddModal(!addModal)
-  const openEditModal = () => setEditModal(!editModal)
-  const openDeleteModal = () => setDeleteModal(!deleteModal)
-
-  useEffect(() => {
-    axios.get(`${url}user`, {
-      headers: {
-        Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjM0NTY3ODkiLCJpYXQiOjE3MDQ5NTgwMzIsImV4cCI6MTcwNTA0NDQzMn0.k2cl1zs8fAmYbHVSwI8peZmem0Bx_wPvXFjPPpBmykopwRtWF2zc3UcCYsqKXlXsVJ2W2QlqQbtEHM22rjx3nQ",
-      }
-    })
-      .then(res => setUser(res.data.body))
-  }, []);
-
-  function editUser() {
-    setLoading(true);
-    axios.put(`${url}user/${user.id}`, {
-      name: byIdObj("name").value,
-      password: byIdObj("password").value,
-      phonenumber: byIdObj("phonenumber")
-
-    }).then(res => {
-      toast.success("User ma'lumotlari o'zgartirildi ");
-      openEditModal();
-      setLoading(false);
-    })
-      .catch(err => toast.error("User malumoti o'zgaritilmadi! Birozdan so'ng qayta urunib ko'ring"));
-
-  }
-  function addUser() {
-    setLoading(true);
-    axios.post(`${url}product`, {
-      name: byIdObj("name").value,
-      phonenumber: byIdObj("phonenumber").value,
-      password: byIdObj("password").value
-    }).then(res => {
-      toast.success("User qo'shildi"); openAddModal();
-      openAddModal();
-      setLoading(false);
-    })
-      .catch(err => toast.error("User ma'lumotlari to'g'ri kelmadi"));
-  }
-  function deleteUser() {
-    setLoading(true);
-    axios.delete(`${url}users/${user.id}`)
-      .then(() => {
-        toast.success("User o'chirildi"); openDeleteModal();
-        openDeleteModal();
-        setLoading(false);
-      })
-      .catch(() => toast.error("qayta urunib ko'ring"));
-  }
   return (
     <>
-    <div className='productTable'>
-      <Container className='mt-5'>
-        <h1 className='text-center color-white '>User List</h1>
-        <Button color='primary' onClick={openAddModal}>+Add User</Button>
-        <Input className='w-25 float-end' placeholder='🔍Search..' />
-        <Table bordered className='mt-3 table-hover'>
-          <thead className='table-dark'>
-            <tr className='text-center'>
-              <th>Id</th>
-              <th>Name</th>
-              <th>PhoneNumber</th>
-              <th>Password</th>
-              <th colSpan={2}>Action</th>
-            </tr>
-          </thead>
+        <div className="productTable">
+          <Container>
+            <h1 className='text-center  '>Product List</h1>
+            <Button 
+            className="addBtnClass"
+            color='primary'
+             onClick={openProductModal}
+            > +Add Product
 
-          <tbody>
-            {users.map((item, i) =>
-              <tr key={i}>
-                <td>{i + 1}</td>
-                <td>{item.name}</td>
-                <td>{item.phoneNumber}</td>
-                <td>{item.password}</td>
+            </Button>
+            <Input
+             style={{
+              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
+              }}
+              className='w-25 float-end' placeholder='🔍Search..' />
+              <Table 
+               style={{
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
+              }}
+              bordered
+              outline
+              striped
+              hover
+              className='mt-5'>
+              <thead className="table-dark">
+                <tr className="text-center">
+                  <th>№</th>
+                  <th>Name</th>
+                  <th>Measure</th>
+                  <th>Transport</th>
+                  <th>ProductStatus</th>
+                  <th>Address</th>
+                  <th colSpan={2}>Action</th>
+                </tr>
+              </thead>
+              <tbody className="text-center user-tbody">
+                {product.map((item,i) =>
+                <tr key={item.id}>
+                  <td>{item+1}</td>
+                  
+                  <td>Measure</td>
+                  <td>Transport</td>
+                  <td>Product</td>
+                  <td>Adress</td>
+                  <td>
+                   <Button 
+                    color="warning"
+                    className="px-4 py-1 my-1"
+                    outline
 
-                
-                <td><Button color='danger' className='px-2 py-1 mt-2 ' outline onClick={() => { setUserObj(item); openEditModal() }}>Edit</Button></td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
-        {/*    Add User     */}
-        <Modal isOpen={addModal}>
-          <ModalHeader toggle={openAddModal}
-          > +Add User
-          </ModalHeader>
-          <ModalBody>
-            <Label form='userName'>Name</Label>
-            <Input type='text' id='userName' placeholder='Name'>Name</Input>
-            <Label form='userPhoneNumber' >PhoneNumber</Label>
-            <Input type='number' id='userPhoneNumber' placeholder='PhoneNumber'>PhoneNumber</Input>
-            <Label form='userpassword' >Password</Label>
-            <Input type='password' id='userpassword' placeholder='Password'>Password</Input>
-          </ModalBody>
-          <ModalFooter>
-            <Button color='primary' onClick={addUser}>{loading ? <Spinner color="light">
-              Loading...
-            </Spinner> : 'Save'}</Button>
-            <Button color='danger' onClick={openAddModal}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-        {/*    Edit User     */}
-        <Modal isOpen={editModal}>
-          <ModalHeader toggle={openEditModal}>Edit User</ModalHeader>
-          <ModalBody>
-            <Label for="name">Name</Label>
-            <Input type='text' id='name' placeholder='Name' defaultValue={user && users.name}></Input>
-            <Label for="phoneNumber">PhoneNumber</Label>
-            <Input type='text' id='phoneNumber' placeholder='PhoneNumber' defaultValue={user && user.phoneNumber}></Input>
-            <Label for="password">Password</Label>
-            <Input type='text' id='password' placeholder='Password' defaultValue={user && user.password}></Input>
-          </ModalBody>
-          <ModalFooter>
-            <Button color='primary' className='px-4 py-2 w-20' disabled={loading} onClick={editUser}>{loading ? <Spinner color="light">
-              Loading...
-            </Spinner> : 'Edit'}</Button>
-            <Button color='danger' onClick={openEditModal}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-      </Container>
-      </div>
+                   >Edit
+                   </Button>
+                   </td>
+                   <td>
+                    <Button
+                     outline
+                     color="info"
+                     className="px-4 py-1 my-1"
+                    >Cancel</Button>
+                   </td>
+                </tr>
+              )}
+              </tbody>
+              </Table>
+              <Modal isOpen = {addproductModal} scrollable centered size = 'xl'>
+                <ModalHeader toggle={openProductModal} className="fs-5">
+                  <span className="fs-4 fw-bold me-2">Add Product</span>
+                </ModalHeader>
+                <ModalBody className="px-2 px-md-5">
+                  
+      
+                  <Label className="mb-0 ms-1 mt-3" for="ProductId" placeholder = 'Product Id'>Product Id</Label>
+                  <Input type="text" id="ProductId" placeholder="Product Id"/>
+                  <Label className="mb-0 ms-1 mt-3" for="IdNumber" placeholder = 'Id Number'>Id Number</Label>
+                  <Input type="text" id="IdNumber" placeholder="IdNumber"/>
+                  <Label className="mb-0 ms-1 mt-3" for="Name" placeholder = 'Name'>Id Number</Label>
+                  <Input type="text" id="Name" placeholder="Name"/>
+                  <Label className="mb-0 ms-1 mt-3" for="MeasureCount" placeholder = 'MeasureCount'>MeasureCount</Label>
+                  <Input type="text" id="MeasureCount" placeholder="MeasureCount"/>
+                  <Label className="mb-0 ms-1 mt-3" for="Transport" placeholder = 'Transport'>Transport</Label>
+                  <Input type="text" id="Transport" placeholder="Transport"/>
+                  <Label className="mb-0 ms-1 mt-3" for="Measure" placeholder = 'Measure'>Id Number</Label>
+                  <Input type="text" id="Measure" placeholder="Measure"/>
+                  <Label className="mb-0 ms-1 mt-3" for="ProductStatus" placeholder = 'ProductStatus'>Id Number</Label>
+                  <Input type="text" id="ProductStatus" placeholder="ProductStatus"/>
+                  <Label className="mb-0 ms-1 mt-3" for="Address" placeholder = 'Address'>Id Number</Label>
+                  <Input type="text" id="Address" placeholder="Address"/>
+                  
+                </ModalBody>
+                <ModalFooter>
+                <Button
+                     
+                     color="info"
+                     className="px-4 py-1 my-1"
+                     
+                    >Save</Button>
+                     <Button
+                     
+                     color="info"
+                     className="px-4 py-1 my-1"
+                     onClick={openProductModal}
+                    >Cancel</Button>
+                </ModalFooter>
+              </Modal>
+          </Container>
+        </div>
     </>
   )
 }
-
 export default Product
