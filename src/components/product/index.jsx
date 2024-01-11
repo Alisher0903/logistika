@@ -72,15 +72,16 @@ const Product = () => {
       <div className="productTable">
         <Container>
           <h1 className='text-center mb-4'>Product List</h1>
+           <h2 className=" text-center px-2 font-semibold text-infoColor leading-7">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae itaque sit, eius assumenda id inventore quibusdam consectetur voluptatibus adipisci facilis laboriosam doloremque libero laborum ad fugiat sed voluptate autem rem.</h2>
           <Button
-            className="addBtnClass"
+            className="addBtnClass mt-4"
             color='primary'
             onClick={openProductModal}>Add Product</Button>
-          <Input
+          <Input 
             style={{
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
             }}
-            className='w-25 float-end' placeholder='🔍Search..' />
+            className='w-25 float-end mt-4' placeholder='🔍Search..' />
 
           <Row className="w-100 mt-5">
             <Col className="col-12 col-md-6 pe-0 pe-md-4">
@@ -141,7 +142,7 @@ const Product = () => {
             </Col>
           </Row>
 
-          <Table
+          <Table 
             style={{
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
               marginTop: "3rem"
