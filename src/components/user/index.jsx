@@ -55,6 +55,7 @@ const User = () => {
 
     let addData = {
       name: byIdObj("userName").value,
+      idNumber : byIdObj("userIdNumber").value,
       phoneNumber: byIdObj("userPhoneNumber").value,
       password: byIdObj("userpassword").value
     }
@@ -91,8 +92,10 @@ const User = () => {
     // setLoading(true);
     let editData = {
       name: byIdObj("userName").value,
+      idNumber : byIdObj("userIdNumber").value,
       password: byIdObj("userpassword").value,
-      phoneNumber: byIdObj("userPhoneNumber").value
+      phoneNumber: byIdObj("userPhoneNumber").value,
+
     }
 
     axios.put(`${url}user/${user.id}`, editData, config)
@@ -146,6 +149,7 @@ const User = () => {
               <tr className='text-center'>
                 <th>#</th>
                 <th>Name</th>
+                <th>IdNumber</th>
                 <th>Phone Number</th>
                 <th>Password</th>
                 <th colSpan={2}>Action</th>
@@ -156,6 +160,7 @@ const User = () => {
                 <tr key={item.id}>
                   <td>{i + 1}</td>
                   <td>{item.name}</td>
+                  <td>{item.idNumber}</td>
                   <td>{item.phoneNumber}</td>
                   <td>{item.password}</td>
                   <td>
