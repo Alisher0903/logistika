@@ -89,9 +89,10 @@ const Product = () => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 borderBottom: "1px dotted",
-                paddingBottom: ".5rem",
+                paddingBottom: ".3rem",
                 fontSize: "1.2rem",
-                fontWeight: "700"
+                fontWeight: "700",
+                marginBottom: "1rem"
               }}>
                 <p style={{ marginBottom: "0" }}>First Name:</p>
                 <p style={{ marginBottom: "0" }}>{userGetMe.name}</p>
@@ -101,23 +102,25 @@ const Product = () => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 borderBottom: "1px dotted",
-                paddingBottom: ".5rem",
+                paddingBottom: ".3rem",
                 fontSize: "1.2rem",
-                fontWeight: "700"
+                fontWeight: "700",
+                marginBottom: "1rem"
               }}>
                 <p style={{ marginBottom: "0" }}>Phone Number:</p>
                 <p style={{ marginBottom: "0" }}>{userGetMe.phoneNumber}</p>
               </div>
             </Col>
-            <Col className="col-12 col-md-6 ps-0 pe-0 ps-md-4">
+            <Col className="col-12 col-md-6 mt-4 mt-md-0 ps-0 pe-0 ps-md-4">
               <div style={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
                 borderBottom: "1px dotted",
-                paddingBottom: ".5rem",
+                paddingBottom: ".3rem",
                 fontSize: "1.2rem",
-                fontWeight: "700"
+                fontWeight: "700",
+                marginBottom: "1rem"
               }}>
                 <p style={{ marginBottom: "0" }}>Id Number:</p>
                 <p style={{ marginBottom: "0" }}>{userGetMe.idNumber}</p>
@@ -127,9 +130,10 @@ const Product = () => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 borderBottom: "1px dotted",
-                paddingBottom: ".5rem",
+                paddingBottom: ".3rem",
                 fontSize: "1.2rem",
-                fontWeight: "700"
+                fontWeight: "700",
+                marginBottom: "1rem"
               }}>
                 <p style={{ marginBottom: "0" }}>Password:</p>
                 <p style={{ marginBottom: "0" }}>{userGetMe.password}</p>
