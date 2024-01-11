@@ -16,6 +16,7 @@ import { byIdObj, config, setConfig, url } from '../api';
 import { toast } from 'react-toastify';
 import './style.css';
 import NavbarAdmin from '../navbar';
+import ReactPaginate from 'react-paginate';
 
 
 const User = () => {
@@ -25,7 +26,7 @@ const User = () => {
   const [editModal, setEditModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [page, setPage] = useState(0);
 
   const openAddModal = () => setAddModal(!addModal)
   const openEditModal = () => setEditModal(!editModal)
@@ -39,7 +40,10 @@ const User = () => {
   // get user
   const getUser = () => {
     axios.get(`${url}user`, config)
-      .then(res => setUser(res.data.body))
+      .then(res => {
+        setUser(res.data.object);
+        setPage(res.data.totalPage)
+      })
       .catch(() => console.log("user kelmadi"))
   }
 
@@ -100,6 +104,13 @@ const User = () => {
         // setLoading(false);
       })
       .catch(() => toast.error("An error occurred❌"))
+  }
+
+  const handelPageClick = (event) => {
+    const pageNumber = event.selected;
+    axios.get(url + "user?page=" + pageNumber + "&size=10", config).then(res => {
+      setUser(res.data.object)
+    });
   }
 
   return (
@@ -170,6 +181,20 @@ const User = () => {
               )}
             </tbody>
           </Table>
+
+          <div className='mb-5 mt-5'>
+            <ReactPaginate className="navigation"
+              breakLabel="..."
+              nextLabel=">"
+              onPageChange={handelPageClick}
+              pageRangeDisplayed={5}
+              pageCount={page}
+              previousLabel="<"
+              renderOnZeroPageCount={null}
+              nextClassName='nextBtn'
+              previousClassName='prevBtn'
+            />
+          </div>
 
           {/* infoModal */}
           <Modal isOpen={infoModal} scrollable centered size='xl'>
