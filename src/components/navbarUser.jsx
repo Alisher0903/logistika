@@ -4,12 +4,15 @@ import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { byIdObj } from './api';
 
-const NavbarAdmin = () => {
+const NavbarLogOut = () => {
 
-    const goUser = () => byIdObj("goUser").click();
+    const logOut = () => {
+        byIdObj("logOut").click();
+        sessionStorage.clear();
+    }
     return (
         <>
-        <Link to="/user" id='goUser'></Link>
+            <Link to="/" id='logOut'></Link>
             <div
                 style={{
                     display: "flex",
@@ -30,11 +33,11 @@ const NavbarAdmin = () => {
                         fontWeight: "700",
                         letterSpacing: "1px",
                     }}>
-                    <Button onClick={goUser} outline color='info' className='text-white fw-bold'>User</Button>
+                    <Button onClick={logOut} outline color='info' className='text-white fw-bold'>Log out</Button>
                 </div>
             </div>
         </>
     )
 }
 
-export default NavbarAdmin
+export default NavbarLogOut

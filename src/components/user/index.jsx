@@ -15,8 +15,9 @@ import {
 import { byIdObj, config, setConfig, url } from '../api';
 import { toast } from 'react-toastify';
 import './style.css';
-import NavbarAdmin from '../navbar';
 import ReactPaginate from 'react-paginate';
+import { Link } from 'react-router-dom';
+import NavbarLogOut from '../navbarUser';
 
 
 const User = () => {
@@ -24,13 +25,11 @@ const User = () => {
   const [user, setUserId] = useState([]);
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
-  const [infoModal, setInfoModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
 
   const openAddModal = () => setAddModal(!addModal)
   const openEditModal = () => setEditModal(!editModal)
-  const openInfoModal = () => setInfoModal(!infoModal)
 
   useEffect(() => {
     setConfig();
@@ -113,9 +112,15 @@ const User = () => {
     });
   }
 
+  const goProduct = (item) => {
+    sessionStorage.setItem("userId", item)
+    byIdObj("goProduct").click();
+  }
+
   return (
     <>
-      <NavbarAdmin />
+      <NavbarLogOut />
+      <Link to="/product" id='goProduct'></Link>
       <div className='userTable'>
         <Container>
           <h1 className='text-center text-white'>User List</h1>
@@ -171,8 +176,7 @@ const User = () => {
                       color='info'
                       className='px-4 py-1 my-1'
                       onClick={() => {
-                        setUserId(item);
-                        openInfoModal()
+                        goProduct(item.id)
                       }}>
                       Info
                     </Button>
@@ -195,15 +199,6 @@ const User = () => {
               previousClassName='prevBtn'
             />
           </div>
-
-          {/* infoModal */}
-          <Modal isOpen={infoModal} scrollable centered size='xl'>
-            <ModalHeader toggle={openInfoModal} className='fs-5'>
-              <span className='fs-4 fw-bold me-2'>{user.name}</span>information
-            </ModalHeader>
-            <ModalBody></ModalBody>
-            <ModalFooter></ModalFooter>
-          </Modal>
 
           {/*    Add User     */}
           <Modal isOpen={addModal} centered size='lg'>

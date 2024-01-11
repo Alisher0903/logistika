@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import Login from './components/login';
 import User from './components/user';
 import Product from './components/product';
-import UserInfo from "./components/user/userInfo";
 
 const App = () => {
   return (
