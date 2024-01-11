@@ -28,7 +28,8 @@ const About = () => {
       <div className='userTable'>
         <Container>
           <h1 className='text-center text-white'>Product List</h1>
-          <Table>
+           <h3 className='text-center px-2 py-3 fs-2 items-center text-dark'>Our services include a comprehensive set of activities <br /> to ensure efficient storage and supply of goods.</h3>
+          <Table className='mt-5'>
             <thead className='table-dark'>
               <tr className='text-center'>
                 <th>Id </th>
