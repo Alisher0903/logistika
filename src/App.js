@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from './components/login';
 import User from './components/user';
 import Product from './components/product';
+import UserInfo from "./components/user/userInfo";
 
 const App = () => {
   return (
@@ -9,6 +10,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/user" element={<User />} />
+        <Route path="/user/info" element={<UserInfo />} />
         <Route path="/product" element={<Product />} />
       </Routes>
     </>
