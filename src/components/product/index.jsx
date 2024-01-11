@@ -13,9 +13,10 @@ import {
   Row,
   Table
 } from "reactstrap"
-import { config, url } from "../api";
+import { byIdObj, config, setConfig, url } from "../api";
 import NavbarAdmin from "../navbar";
 import "./style.css";
+import { toast } from "react-toastify";
 
 const Product = () => {
 
@@ -24,6 +25,7 @@ const Product = () => {
   const [productDtoS, setProductDtoS] = useState([]);
 
   useEffect(() => {
+    setConfig();
     getProduct();
   }, []);
 
@@ -37,6 +39,31 @@ const Product = () => {
         setProductDtoS(res.data.body.productDtoS);
       })
       .catch(() => console.log("getMe kelmadi"))
+  }
+
+  const addProduct = async () => {
+    let addData = {
+      id: 0,
+      idNumber: userGetMe.idNumber,
+      name: byIdObj("name").value,
+      measureCount: byIdObj("measureCount").value,
+      transport: byIdObj("transport").value,
+      measure: byIdObj("measure").value,
+      productStatus: byIdObj("productStatus").value,
+      latitude: 0,
+      longitude: 0,
+      address: byIdObj("address").value
+    }
+    let userId = sessionStorage.getItem("userId");
+    await axios.post(url + "product?id=" + userId, addData, config)
+      .then(() => {
+        toast.success("Successfully product saved✔")
+        addproductModal();
+        getProduct();
+      })
+      .catch(() => {
+        toast.error("Error product saved❌")
+      })
   }
 
   return (
@@ -162,36 +189,65 @@ const Product = () => {
           </Table>
 
           {/* add product modal */}
-          <Modal isOpen={addproductModal} scrollable centered size='xl'>
+          <Modal isOpen={addproductModal} scrollable centered size='lg'>
             <ModalHeader toggle={openProductModal} className="fs-5">
               <span className="fs-4 fw-bold me-2">Add Product</span>
             </ModalHeader>
-            <ModalBody className="px-2 px-md-5">
-              <Label className="mb-0 ms-1 mt-3" for="ProductId" placeholder='Product Id'>Product Id</Label>
-              <Input type="text" id="ProductId" placeholder="Product Id" />
-              <Label className="mb-0 ms-1 mt-3" for="IdNumber" placeholder='Id Number'>Id Number</Label>
-              <Input type="text" id="IdNumber" placeholder="IdNumber" />
-              <Label className="mb-0 ms-1 mt-3" for="Name" placeholder='Name'>Id Number</Label>
-              <Input type="text" id="Name" placeholder="Name" />
-              <Label className="mb-0 ms-1 mt-3" for="MeasureCount" placeholder='MeasureCount'>MeasureCount</Label>
-              <Input type="text" id="MeasureCount" placeholder="MeasureCount" />
-              <Label className="mb-0 ms-1 mt-3" for="Transport" placeholder='Transport'>Transport</Label>
-              <Input type="text" id="Transport" placeholder="Transport" />
-              <Label className="mb-0 ms-1 mt-3" for="Measure" placeholder='Measure'>Id Number</Label>
-              <Input type="text" id="Measure" placeholder="Measure" />
-              <Label className="mb-0 ms-1 mt-3" for="ProductStatus" placeholder='ProductStatus'>Id Number</Label>
-              <Input type="text" id="ProductStatus" placeholder="ProductStatus" />
-              <Label className="mb-0 ms-1 mt-3" for="Address" placeholder='Address'>Id Number</Label>
-              <Input type="text" id="Address" placeholder="Address" />
+            <ModalBody>
+              <Label className="mb-0 ms-1" for="name">Name</Label>
+              <Input type="text" id="name" placeholder="Name" />
+              <Label className="mb-0 ms-1 mt-3" for="measure">Measure</Label>
+              <select className='form-select' id="measure">
+                <option selected disabled>Measure</option>
+                <option value="KG">KG</option>
+                <option value="PIECE">PIECE</option>
+                <option value="KUB">KUB</option>
+                <option value="L">L</option>
+              </select>
+              <Label className="mb-0 ms-1 mt-3" for="measureCount">Measure Count</Label>
+              <Input type="text" id="measureCount" placeholder="Measure Count" />
+              <Label className="mb-0 ms-1 mt-3" for="transport">Transport</Label>
+              <select className='form-select' id="transport">
+                <option selected disabled>Transport</option>
+                <option value="CAR">CAR</option>
+                <option value="AIRPLANE">AIRPLANE</option>
+                <option value="TRAIN">TRAIN</option>
+              </select>
+              <Label className="mb-0 ms-1 mt-3" for="productStatus">Product Status</Label>
+              <select className='form-select' id="productStatus">
+                <option selected disabled>Product Status</option>
+                <option value="CAME_OUT">CAME_OUT</option>
+                <option value="ON_THE_WAY">ON_THE_WAY</option>
+                <option value="ARRIVED">ARRIVED</option>
+                <option value="NOT_CAME_OUT">NOT_CAME_OUT</option>
+              </select>
+              <Label className="mb-0 ms-1 mt-3" for="address">Address</Label>
+              <Input type="text" id="address" placeholder="Address" />
+
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6131044.253373623!2d64.6085751!3d41.38116805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b20a5d676b1%3A0xca0a6dad7e841e20!2sO%60zbekiston!5e0!3m2!1suz!2s!4v1705000911383!5m2!1suz!2s"
+                width="100%"
+                height="400"
+                style={{ marginTop: "2rem" }}
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
             </ModalBody>
             <ModalFooter>
               <Button
-                color="info"
-                className="px-4 py-1 my-1">Save</Button>
+                style={{
+                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                }}
+                className='px-4 me-3 fw-bolder'
+                color='danger'
+                onClick={openProductModal}>Close</Button>
               <Button
-                color="info"
-                className="px-4 py-1 my-1"
-                onClick={openProductModal}>Cancel</Button>
+                style={{
+                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                }}
+                className='px-4 fw-bolder'
+                color='primary' onClick={addProduct}>Save</Button>
             </ModalFooter>
           </Modal>
         </Container>
