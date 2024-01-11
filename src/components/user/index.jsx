@@ -112,10 +112,7 @@ const User = () => {
     });
   }
 
-  const goProduct = (item) => {
-    sessionStorage.setItem("userId", item)
-    byIdObj("goProduct").click();
-  }
+  const goProduct = () => byIdObj("goProduct").click();
 
   return (
     <>
@@ -152,7 +149,7 @@ const User = () => {
               </tr>
             </thead>
             <tbody className='text-center user-tbody'>
-              {users.map((item, i) =>
+              {users && users.map((item, i) =>
                 <tr key={item.id}>
                   <td>{i + 1}</td>
                   <td>{item.name}</td>
@@ -176,7 +173,8 @@ const User = () => {
                       color='info'
                       className='px-4 py-1 my-1'
                       onClick={() => {
-                        goProduct(item.id)
+                        goProduct();
+                        sessionStorage.setItem("userId", item.id)
                       }}>
                       Info
                     </Button>

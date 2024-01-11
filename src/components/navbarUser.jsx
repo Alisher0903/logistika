@@ -17,6 +17,7 @@ const NavbarLogOut = () => {
                 style={{
                     display: "flex",
                     justifyContent: "space-between",
+                    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                     alignItems: "center",
                     background: "#5AA0D2",
                     position: "sticky",

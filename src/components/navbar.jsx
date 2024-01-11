@@ -12,6 +12,7 @@ const NavbarAdmin = () => {
         <Link to="/user" id='goUser'></Link>
             <div
                 style={{
+                    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",

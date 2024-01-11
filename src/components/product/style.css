@@ -1,60 +1,61 @@
-.productTable{
-        background: linear-gradient(0deg,
-        #ffffff 0%,
-        #4695cd 85%);
-        padding-top: 6rem;
-        font-family: Lora sans-serif;
+.productTable {
+    background: linear-gradient(0deg,
+            #ffffff 0%,
+            #4695cd 85%);
+    padding-top: 4rem;
+    font-family: Lora sans-serif;
 }
+
 .user-tbody {
-        vertical-align: middle;
+    vertical-align: middle;
+}
+
+.userTable h1 {
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+}
+
+.navigation {
+    list-style-type: none;
+}
+
+.navigation li {
+    display: inline-block;
+    padding: 10px;
+    width: 3rem;
+    height: 3rem;
+    margin-right: 10px;
+    border-radius: 50%;
+    transition: all .5s;
+    background-color: #c8c7c7;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    &:hover {
+        background-color: #15c6c6;
+        color: white;
     }
-    
-    .userTable h1 {
-        font-weight: 700;
-        letter-spacing: 1px;
-        margin-bottom: 2rem;
+
+    &:active {
+        transform: scale(.8);
     }
-    
-    .navigation {
-        list-style-type: none;
+}
+
+.navigation li a {
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+
+    &:focus {
+        font-weight: 900;
+        color: #00ffcc;
     }
-    
-    .navigation li {
-        display: inline-block;
-        padding: 10px;
-        width: 3rem;
-        height: 3rem;
-        margin-right: 10px;
-        border-radius: 50%;
-        transition: all .5s;
-        background-color: #c8c7c7;
-        text-align: center;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    
-        &:hover {
-            background-color: #15c6c6;
-            color: white;
-        }
-    
-        &:active {
-            transform: scale(.8);
-        }
-    }
-    
-    .navigation li a {
-        text-decoration: none;
-        font-size: 1.1rem;
-        font-weight: 500;
-    
-        &:focus {
-            font-weight: 900;
-            color: #00ffcc;
-        }
-    }
-    
-    .prevBtn,
-    .nextBtn {
-        font-size: 900;
-        font-size: 1.1rem;
-        font-weight: 700;
-    }
+}
+
+.prevBtn,
+.nextBtn {
+    font-size: 900;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
