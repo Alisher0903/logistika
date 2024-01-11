@@ -258,6 +258,8 @@ const User = () => {
               <Input type='text' id='userName' placeholder='Name' defaultValue={user && user.name} />
               <Label className='mb-0 ms-1 mt-3' for='userPhoneNumber'>PhoneNumber</Label>
               <Input type='number' id='userPhoneNumber' placeholder='PhoneNumber' defaultValue={user && user.phoneNumber} />
+              <Label className='mb-0 ms-1 mt-3' for='idNumber'>Id Number</Label>
+              <Input type='number' id='idNumber' placeholder='Id Number' defaultValue={user && user.idNumber} />
               <Label className='mb-0 ms-1 mt-3' for='userpassword'>Password</Label>
               <Input id='userpassword' placeholder='Password' defaultValue={user && user.password} />
             </ModalBody>
