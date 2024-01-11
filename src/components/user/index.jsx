@@ -12,9 +12,10 @@ import {
   Spinner,
   Table
 } from 'reactstrap'
-import { byIdObj, config, url } from '../api';
+import { byIdObj, config, setConfig, url } from '../api';
 import { toast } from 'react-toastify';
 import './style.css';
+import NavbarAdmin from '../navbar';
 
 
 const User = () => {
@@ -31,6 +32,7 @@ const User = () => {
   const openInfoModal = () => setInfoModal(!infoModal)
 
   useEffect(() => {
+    setConfig();
     getUser();
   }, []);
 
@@ -102,6 +104,7 @@ const User = () => {
 
   return (
     <>
+      <NavbarAdmin />
       <div className='userTable'>
         <Container>
           <h1 className='text-center text-white'>User List</h1>
