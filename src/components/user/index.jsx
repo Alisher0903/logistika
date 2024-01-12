@@ -63,31 +63,28 @@ const User = () => {
     if (roles.ROLE === "ROLE_USER") {
       setLoading(true);
       axios.post(`${url}user?ROLE=ROLE_USER`, addData, config)
-        .then(() => {
-          toast.success("User saved✔");
-          openAddModal();
-          getUser();
+        .then(res => {
           setLoading(false);
+          if (res.data.success === true) {
+            toast.success("User saved✔");
+            openAddModal();
+            getUser();
+          } else {
+            toast.error(res.data.message)
+          }
         })
-        .catch(err => {
-          toast.error("An error occurred❌")
-          console.log(addData);
-          setLoading(false);
-        });
+        .catch(() => setLoading(false));
     } else if (roles.ROLE === "ROLE_ADMIN") {
       setLoading(true);
       axios.post(`${url}user?ROLE=ROLE_ADMIN`, addData, config)
-        .then(() => {
-          toast.success("Admin saved✔");
-          openAddModal();
-          getUser();
+        .then(res => {
           setLoading(false);
+          if (res.data.success === true) {
+            toast.success("Admin saved✔");
+            openAddModal();
+          } else toast.error(res.data.message)
         })
-        .catch(err => {
-          console.log(addData);
-          toast.error("An error occurred❌")
-          setLoading(false);
-        });
+        .catch(() => setLoading(false))
     }
   }
 
@@ -102,14 +99,16 @@ const User = () => {
     }
 
     axios.put(`${url}user/${user.id}`, editData, config)
-      .then(() => {
-        toast.success("Saccessfully user edit✔");
-        openEditModal();
-        getUser();
+      .then((res) => {
         setLoadingEdit(false);
+        if (res.data.success === true) {
+          toast.success("Saccessfully user edit✔");
+          openEditModal();
+          getUser();
+        } else toast.error(res.data.message)
       })
       .catch(() => {
-        toast.error("An error occurred❌")
+        toast.error("Phone number may be available❌")
         setLoadingEdit(false);
       })
   }
@@ -265,7 +264,7 @@ const User = () => {
               <Label className='mb-0 ms-1 mt-3' for='userPhoneNumber'>PhoneNumber</Label>
               <Input type='number' id='userPhoneNumber' placeholder='PhoneNumber' defaultValue={user && user.phoneNumber} />
               <Label className='mb-0 ms-1 mt-3' for='idNumber'>Id Number</Label>
-              <Input type='number' id='idNumber' placeholder='Id Number' defaultValue={user && user.idNumber} />
+              <Input id='idNumber' placeholder='Id Number' defaultValue={user && user.idNumber} />
               <Label className='mb-0 ms-1 mt-3' for='userpassword'>Password</Label>
               <Input id='userpassword' placeholder='Password' defaultValue={user && user.password} />
             </ModalBody>
