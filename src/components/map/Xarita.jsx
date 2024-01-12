@@ -7,20 +7,26 @@ function Xarita() {
     const handleClick = (e) => {
         const coords = e.get('coords');
         setCoordinates(coords);
-        console.log(`Koordinatalar: ${coords[0]}, ${coords[1]}`);
+        sessionStorage.setItem("lat", coords[0])
+        sessionStorage.setItem("long", coords[1])
     };
 
     return (
-        <YMaps>
-            <Map
-                defaultState={{ center: [41.311151, 69.279737], zoom: 8 }}
-                width="100%"
-                height="400px"
-                onClick={handleClick}
-            >
-                <Placemark geometry={coordinates} />
-            </Map>
-        </YMaps>
+        <div className='map-main'>
+            <div className='map-box'>
+                <YMaps>
+                    <Map
+                        defaultState={{ center: [41.311151, 69.279737], zoom: 8 }}
+                        width="100%"
+                        height="100%"
+                        onClick={handleClick}
+                    >
+                        <Placemark defaultGeometry={{ center: [41.311151, 69.279737], zoom: 8 }} geometry={coordinates} />
+                    </Map>
+                </YMaps>
+            </div>
+
+        </div>
     );
 }
 

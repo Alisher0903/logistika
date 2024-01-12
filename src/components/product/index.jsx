@@ -228,18 +228,11 @@ const Product = () => {
                 <option value="NOT_CAME_OUT">NOT_CAME_OUT</option>
               </select>
               <Label className="mb-0 ms-1 mt-3" for="address">Address</Label>
-              <Input type="text" id="address" placeholder="Address" />
+              <Input type="text" className="mb-4" id="address" placeholder="Address" />
 
+              {/* yandex maps */}
               <Xarita />
-              {/* <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6131044.253373623!2d64.6085751!3d41.38116805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b20a5d676b1%3A0xca0a6dad7e841e20!2sO%60zbekiston!5e0!3m2!1suz!2s!4v1705000911383!5m2!1suz!2s"
-                width="100%"
-                height="400"
-                style={{ marginTop: "2rem" }}
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade">
-              </iframe> */}
+              
             </ModalBody>
             <ModalFooter>
               <Button
