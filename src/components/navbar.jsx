@@ -26,7 +26,7 @@ const NavbarAdmin = () => {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        paddingRight: "7.5rem",
+                        paddingRight: "2rem",
                         fontSize: "1.5rem",
                         fontWeight: "700",
                         letterSpacing: "1px",
