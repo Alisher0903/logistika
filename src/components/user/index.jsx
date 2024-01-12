@@ -26,6 +26,7 @@ const User = () => {
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
   const [page, setPage] = useState(0);
 
   const openAddModal = () => setAddModal(!addModal)
@@ -48,7 +49,6 @@ const User = () => {
 
   // add user
   function addUser() {
-    // setLoading(true);
     let roles = {
       ROLE: byIdObj("roleType").value,
     }
@@ -61,41 +61,44 @@ const User = () => {
     }
 
     if (roles.ROLE === "ROLE_USER") {
+      setLoading(true);
       axios.post(`${url}user?ROLE=ROLE_USER`, addData, config)
         .then(() => {
           toast.success("User saved✔");
           openAddModal();
           getUser();
-          // setLoading(false);
+          setLoading(false);
         })
         .catch(err => {
           toast.error("An error occurred❌")
           console.log(addData);
+          setLoading(false);
         });
     } else if (roles.ROLE === "ROLE_ADMIN") {
+      setLoading(true);
       axios.post(`${url}user?ROLE=ROLE_ADMIN`, addData, config)
         .then(() => {
           toast.success("Admin saved✔");
           openAddModal();
           getUser();
-          // setLoading(false);
+          setLoading(false);
         })
         .catch(err => {
           console.log(addData);
           toast.error("An error occurred❌")
+          setLoading(false);
         });
     }
   }
 
   // edit user
   function editUser() {
-    // setLoading(true);
+    setLoadingEdit(true);
     let editData = {
       name: byIdObj("userName").value,
       idNumber: byIdObj("idNumber").value,
       password: byIdObj("userpassword").value,
       phoneNumber: byIdObj("userPhoneNumber").value,
-
     }
 
     axios.put(`${url}user/${user.id}`, editData, config)
@@ -103,9 +106,12 @@ const User = () => {
         toast.success("Saccessfully user edit✔");
         openEditModal();
         getUser();
-        // setLoading(false);
+        setLoadingEdit(false);
       })
-      .catch(() => toast.error("An error occurred❌"))
+      .catch(() => {
+        toast.error("An error occurred❌")
+        setLoadingEdit(false);
+      })
   }
 
   const handelPageClick = (event) => {
@@ -236,11 +242,11 @@ const User = () => {
                 style={{
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                 }}
-                className='px-4 fw-bolder me-0'
+                className={`fw-bolder me-0 ${loading ? 'px-5' : 'px-4'}`}
                 color='primary'
-                onClick={addUser}>
+                onClick={addUser} disabled={loading}>
                 {loading ?
-                  <Spinner color="light">
+                  <Spinner color="light" style={{ width: "21px", height: "21px" }}>
                     Loading...
                   </Spinner> :
                   'Save'}
@@ -275,11 +281,11 @@ const User = () => {
                 style={{
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                 }}
-                className='px-4 fw-bolder me-0'
+                className={`fw-bolder me-0 ${loadingEdit ? 'px-5' : 'px-4'}`}
                 color='primary'
-                onClick={editUser}>
-                {loading ?
-                  <Spinner color="light">
+                onClick={editUser} disabled={loadingEdit}>
+                {loadingEdit ?
+                  <Spinner color="light" style={{ width: "21px", height: "21px" }}>
                     Loading...
                   </Spinner> :
                   'Edit'}
