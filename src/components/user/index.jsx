@@ -150,62 +150,69 @@ const User = () => {
             style={{
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
             }}
-            className='w-25 float-end' placeholder='🔍Search..' />
-          <Table
-            style={{
-              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
-            }}
-            bordered
-            outline
-            striped
-            hover
-            className='mt-5 tableHead'>
-            <thead className='table-dark bordered tablehead'>
-              <tr className='text-uppercase text-center text-success px-4 py-4'>
-                <th scope='col'>№</th>
-                <th scope='col'>Name</th>
-                <th scope='col'>Id Number</th>
-                <th scope='col'>Phone Number</th>
-                <th scope='col'>Password</th>
-                <th colSpan={2}>Action</th>
-              </tr>
-            </thead>
-            <tbody className='text-center user-tbody'>
-              {users && users.map((item, i) =>
-                <tr key={item.id}>
-                  <td>{i + 1}</td>
-                  <td>{item.name}</td>
-                  <td>{item.idNumber}</td>
-                  <td>{item.phoneNumber}</td>
-                  <td>{item.password}</td>
-                  <td>
-                    <Button
-                      color='warning'
-                      className='px-4 py-1 my-1'
-                      outline
-                      onClick={() => {
-                        setUserId(item);
-                        openEditModal()
-                      }}>
-                      Edit
-                    </Button>
-                  </td>
-                  <td>
-                    <Button
-                      outline
-                      color='info'
-                      className='px-4 py-1 my-1'
-                      onClick={() => {
-                        goProduct();
-                        sessionStorage.setItem("userId", item.id)
-                      }}>
-                      Info
-                    </Button>
-                  </td>
+            className='admin-search float-end' placeholder='🔍Search..' />
+          <div style={{
+            borderRadius: "10px",
+            overflow: "hidden",
+            marginTop: "2.5rem"
+          }}>
+            <Table
+              style={{
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
+              }}
+              outline
+              responsive
+              striped
+              hover
+              className='tableHead'>
+              <thead className='table-dark bordered tablehead'>
+                <tr className='text-uppercase text-center text-success px-4 py-4'>
+                  <th scope='col'>№</th>
+                  <th scope='col'>Name</th>
+                  <th scope='col'>Id Number</th>
+                  <th scope='col'>Phone Number</th>
+                  <th scope='col'>Password</th>
+                  <th colSpan={2}>Action</th>
                 </tr>
-              )}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody className='text-center user-tbody'>
+                {users && users.map((item, i) =>
+                  <tr key={item.id}>
+                    <td>{i + 1}</td>
+                    <td>{item.name}</td>
+                    <td>{item.idNumber}</td>
+                    <td>{item.phoneNumber}</td>
+                    <td>{item.password}</td>
+                    <td>
+                      <Button
+                        color='warning'
+                        className='px-4 py-1 my-1'
+                        outline
+                        onClick={() => {
+                          setUserId(item);
+                          openEditModal()
+                        }}>
+                        Edit
+                      </Button>
+                    </td>
+                    <td>
+                      <Button
+                        outline
+                        color='info'
+                        className='px-4 py-1 my-1'
+                        onClick={() => {
+                          goProduct();
+                          sessionStorage.setItem("userId", item.id)
+                        }}>
+                        Info
+                      </Button>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </div>
+
 
           <div className='mb-5 mt-5'>
             <ReactPaginate className="navigation"

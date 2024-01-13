@@ -23,7 +23,7 @@ const NavbarLogOut = () => {
                     position: "sticky",
                     top: "0"
                 }}>
-                <img src={logo} alt="brand" width="250" />
+                <img src={logo} alt="brand" className='admin-nav' width="250" />
                 <div
                     style={{
                         display: "flex",

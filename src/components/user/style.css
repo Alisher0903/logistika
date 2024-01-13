@@ -60,9 +60,24 @@
     font-size: 1.1rem;
     font-weight: 700;
 }
-.tableHead{
+
+.tableHead {
     border-radius: 30px;
     border: 1px solid white;
     border-spacing: 1px;
     border-top-left-radius: 10px
+}
+
+.admin-search {
+    width: 30% !important;
+}
+
+@media (max-width: 500px) {
+    .admin-search {
+        width: 50% !important;
+    }
+
+    .admin-nav {
+        width: 170px !important;
+    }
 }
