@@ -15,7 +15,7 @@ import {
   Row,
   Table
 } from "reactstrap"
-import { byIdObj, config, setConfig, url } from "../api";
+import { byId, byIdObj, config, setConfig, url } from "../api";
 import NavbarAdmin from "../navbar";
 import "./style.css";
 import { toast } from "react-toastify";
@@ -34,6 +34,7 @@ const Product = () => {
 
   useEffect(() => {
     setConfig();
+    getMe();
     getProduct();
   }, []);
 
@@ -41,23 +42,43 @@ const Product = () => {
   const openEditProductModal = () => setEditProductModal(!editProductModal);
   const openProductLocModal = () => setProductLoc(!productLoc);
 
-  const getProduct = () => {
+  function getProduct() {
+    axios.get(`${url}product?userId=${sessionStorage.getItem("userId")}`, config)
+      .then(res => setProductDtoS(res.data.object));
+  }
+
+  function fullData() {
+    return [{
+      id: 0,
+      idNumber: userGetMe.idNumber,
+      name: byId("name"),
+      measureCount: byId("measureCount"),
+      transport: byId("transport"),
+      measure: byId("measure"),
+      productStatus: byId("productStatus"),
+      latitude: sessionStorage.getItem("lat"),
+      longitude: sessionStorage.getItem("long"),
+      address: sessionStorage.getItem("address")
+    }]
+  }
+
+  const getMe = () => {
     let userId = sessionStorage.getItem("userId")
     axios.get(url + "user/getMe/" + userId, config)
       .then(res => {
         setUserGetMe(res.data.body);
-        setProductDtoS(res.data.body.productDtoS);
-      })
-      .catch(() => console.log("getMe kelmadi"))
+      }).catch(() => console.log("getMe kelmadi"))
   }
 
   // Admin search 
 
   const searchProduct = () => {
-    let searchVal = byIdObj("searchIn").value;
+    let searchVal = byId("search");
     if (!!searchVal) {
-      axios.get(url + "product/admin/search?data=" + searchVal, "", config)
-        .then(res => setProductDtoS(res.data.body))
+      axios.get(`${url}product/admin/search?data=${searchVal}&userId=${sessionStorage.getItem("userId")}`, config)
+        .then(res => {
+          setProductDtoS(res.data.body)
+        })
         .catch(() => toast.error("The information you were looking for was not found ❌"))
     }
     else getProduct();
@@ -70,66 +91,41 @@ const Product = () => {
   }
 
   // add product
-  const addProduct = async () => {
-    let latitude = sessionStorage.getItem("lat")
-    let longitude = sessionStorage.getItem("long")
-    let address = sessionStorage.getItem("address")
-    let addData = [{
-      id: 0,
-      idNumber: userGetMe.idNumber,
-      name: byIdObj("name").value,
-      measureCount: byIdObj("measureCount").value,
-      transport: byIdObj("transport").value,
-      measure: byIdObj("measure").value,
-      productStatus: byIdObj("productStatus").value,
-      latitude: latitude,
-      longitude: longitude,
-      address: address
-    }];
-    let id = sessionStorage.getItem("id");
-    console.log(id);
-    await axios.post(`${url}product?userId=${id}`, addData, config)
+  const addProduct = () => {
+    let userId = sessionStorage.getItem("userId");
+    axios.post(url + "product?userId=" + userId, fullData, config)
       .then(() => {
         toast.success("Successfully product saved✔")
-        addproductModal();
-        getProduct();
-        console.log(addData);
-      })
-      .catch(err => {
+        openProductModal()
+      }).catch((err) => {
         console.log(err);
         toast.error("Error product saved❌")
       })
-      console.log(addData);
   }
 
   // edit product
-  const editProduct = async () => {
-    let latitude = sessionStorage.getItem("lat")
-    let longitude = sessionStorage.getItem("long")
-    let address = sessionStorage.getItem("address")
-    let editData = {
+  const editProduct = () => {
+    let data = {
       id: productEdit.id,
       idNumber: userGetMe.idNumber,
-      name: byIdObj("name").value,
-      measureCount: byIdObj("measureCount").value,
-      transport: byIdObj("transport").value,
-      measure: byIdObj("measure").value,
-      productStatus: byIdObj("productStatus").value,
-      latitude: latitude,
-      longitude: longitude,
-      address: address
+      name: byId("name"),
+      measureCount: byId("measureCount"),
+      transport: byId("transport"),
+      measure: byId("measure"),
+      productStatus: byId("productStatus"),
+      latitude: sessionStorage.getItem("lat"),
+      longitude: sessionStorage.getItem("long"),
+      address: sessionStorage.getItem("address")
     }
-    await axios.post(url + "product/" + productEdit.id, editData, config)
+
+    axios.put(`${url}product`, data, config)
       .then(() => {
-        toast.success("Successfully product edit")
-        addproductModal();
-        getProduct();
-        console.log(editData);
-      })
-      .catch(() => {
-        console.log(editData);
-        toast.error("Error product saved❌")
-      })
+        toast.success("Successfully product edit");
+        openEditProductModal();
+      }).catch(err => {
+        console.log(err);
+        toast.error("Error product Edit");
+      });
   }
 
   return (
@@ -146,9 +142,10 @@ const Product = () => {
               onClick={openProductModal}>Add Product</Button>
             <InputGroup className='admin-search'>
               <Input
+                id="search"
                 placeholder='Search...'
               />
-              <InputGroupText
+              <InputGroupText style={{cursor: "pointer"}}
                 onClick={searchProduct}
               >🔎</InputGroupText>
             </InputGroup>
@@ -377,7 +374,7 @@ const Product = () => {
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                 }}
                 className='px-4 fw-bolder'
-                color='primary'>Save</Button>
+                color='primary'>Edit</Button>
             </ModalFooter>
           </Modal>
 
