@@ -51,7 +51,7 @@ const User = () => {
   const searchUser = () => {
     let searchVal = byIdObj("searchIn").value;
     if (!!searchVal) {
-      axios.get(url + "user/search?data=" + searchVal, "", config)
+      axios.get(url + "user/search?data=" + searchVal, config)
         .then(res => setUser(res.data.body))
         .catch(() => toast.error("The information you were looking for was not found ❌"))
     }

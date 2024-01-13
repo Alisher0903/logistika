@@ -15,13 +15,14 @@ import {
   Row,
   Table
 } from "reactstrap"
-import { byId, byIdObj, config, setConfig, url } from "../api";
+import { byIdObj, config, setConfig, url } from "../api";
 import NavbarAdmin from "../navbar";
 import "./style.css";
 import { toast } from "react-toastify";
 import Xarita from "../map/Xarita";
 import XaritaEdit from "../map/Xarita_edit";
 import LocationE from "../location/Location";
+import ReactPaginate from "react-paginate";
 
 const Product = () => {
 
@@ -31,58 +32,64 @@ const Product = () => {
   const [userGetMe, setUserGetMe] = useState([]);
   const [productDtoS, setProductDtoS] = useState([]);
   const [productEdit, setProductEdit] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     setConfig();
-    getMe();
     getProduct();
+    getProductList();
   }, []);
 
   const openProductModal = () => setProductModal(!addproductModal);
   const openEditProductModal = () => setEditProductModal(!editProductModal);
   const openProductLocModal = () => setProductLoc(!productLoc);
 
-  function getProduct() {
-    axios.get(`${url}product?userId=${sessionStorage.getItem("userId")}`, config)
-      .then(res => setProductDtoS(res.data.object));
-  }
-
-  function fullData() {
-    return [{
-      id: 0,
-      idNumber: userGetMe.idNumber,
-      name: byId("name"),
-      measureCount: byId("measureCount"),
-      transport: byId("transport"),
-      measure: byId("measure"),
-      productStatus: byId("productStatus"),
-      latitude: sessionStorage.getItem("lat"),
-      longitude: sessionStorage.getItem("long"),
-      address: sessionStorage.getItem("address")
-    }]
-  }
-
-  const getMe = () => {
-    let userId = sessionStorage.getItem("userId")
+  let userId = sessionStorage.getItem("id")
+  const getProduct = () => {
     axios.get(url + "user/getMe/" + userId, config)
       .then(res => {
         setUserGetMe(res.data.body);
-      }).catch(() => console.log("getMe kelmadi"))
+      })
+      .catch(() => console.log("getMe kelmadi"))
+  }
+
+  const getProductList = () => {
+    axios.get(`${url}product?userId=${userId}`, config)
+      .then(res => {
+        setProductDtoS(res.data.object);
+        setTotalPage(res.data.totalPage);
+      })
+      .catch(() => console.log("getMe kelmadi"))
+  }
+
+  const handelPageClick = (event) => {
+    const pageNumber = event.selected;
+    setCurrentPage(pageNumber)
+    axios.get(`${url}product?userId=${userId}&page=${pageNumber}&size=10`, config)
+      .then(res => {
+        setProductDtoS(res.data.object)
+      });
   }
 
   // Admin search 
-
   const searchProduct = () => {
-    let searchVal = byId("search");
+    let searchVal = byIdObj("searchIn").value;
     if (!!searchVal) {
-      axios.get(`${url}product/admin/search?data=${searchVal}&userId=${sessionStorage.getItem("userId")}`, config)
+      axios.get(`${url}product/admin/search?data=${searchVal}&userId=${userId}`, config)
         .then(res => {
-          setProductDtoS(res.data.body)
+          console.log(res);
+          if (res.data.success === true) setProductDtoS(res.data.body)
+          if (res.data.success === false) {
+            setProductDtoS("");
+            toast.error("The information you were looking for was not found❌")
+          }
         })
         .catch(() => toast.error("The information you were looking for was not found ❌"))
     }
-    else getProduct();
+    else getProductList();
   }
+
   function checkKeyPress(event) {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -91,41 +98,66 @@ const Product = () => {
   }
 
   // add product
-  const addProduct = () => {
-    let userId = sessionStorage.getItem("userId");
-    axios.post(url + "product?userId=" + userId, fullData, config)
+  const addProduct = async () => {
+    let latitude = sessionStorage.getItem("lat")
+    let longitude = sessionStorage.getItem("long")
+    let address = sessionStorage.getItem("address")
+    let addData = [{
+      id: 0,
+      idNumber: userGetMe.idNumber,
+      name: byIdObj("name").value,
+      measureCount: byIdObj("measureCount").value,
+      transport: byIdObj("transport").value,
+      measure: byIdObj("measure").value,
+      productStatus: byIdObj("productStatus").value,
+      latitude: latitude,
+      longitude: longitude,
+      address: address
+    }];
+    let id = sessionStorage.getItem("id");
+    console.log(id);
+    await axios.post(`${url}product?userId=${id}`, addData, config)
       .then(() => {
         toast.success("Successfully product saved✔")
-        openProductModal()
-      }).catch((err) => {
+        addproductModal();
+        getProduct();
+        console.log(addData);
+      })
+      .catch(err => {
         console.log(err);
         toast.error("Error product saved❌")
       })
+    console.log(addData);
   }
 
   // edit product
-  const editProduct = () => {
-    let data = {
+  const editProduct = async () => {
+    let latitude = sessionStorage.getItem("lat")
+    let longitude = sessionStorage.getItem("long")
+    let address = sessionStorage.getItem("address")
+    let editData = {
       id: productEdit.id,
       idNumber: userGetMe.idNumber,
-      name: byId("name"),
-      measureCount: byId("measureCount"),
-      transport: byId("transport"),
-      measure: byId("measure"),
-      productStatus: byId("productStatus"),
-      latitude: sessionStorage.getItem("lat"),
-      longitude: sessionStorage.getItem("long"),
-      address: sessionStorage.getItem("address")
+      name: byIdObj("name").value,
+      measureCount: byIdObj("measureCount").value,
+      transport: byIdObj("transport").value,
+      measure: byIdObj("measure").value,
+      productStatus: byIdObj("productStatus").value,
+      latitude: latitude,
+      longitude: longitude,
+      address: address
     }
-
-    axios.put(`${url}product`, data, config)
+    await axios.post(url + "product/" + productEdit.id, editData, config)
       .then(() => {
-        toast.success("Successfully product edit");
-        openEditProductModal();
-      }).catch(err => {
-        console.log(err);
-        toast.error("Error product Edit");
-      });
+        toast.success("Successfully product edit")
+        addproductModal();
+        getProduct();
+        console.log(editData);
+      })
+      .catch(() => {
+        console.log(editData);
+        toast.error("Error product saved❌")
+      })
   }
 
   return (
@@ -141,13 +173,8 @@ const Product = () => {
               color='primary'
               onClick={openProductModal}>Add Product</Button>
             <InputGroup className='admin-search'>
-              <Input
-                id="search"
-                placeholder='Search...'
-              />
-              <InputGroupText style={{cursor: "pointer"}}
-                onClick={searchProduct}
-              >🔎</InputGroupText>
+              <Input onKeyDown={checkKeyPress} id="searchIn" placeholder='Search...' />
+              <InputGroupText style={{cursor: "pointer"}} id="inputBtn" onClick={searchProduct}>🔎</InputGroupText>
             </InputGroup>
           </div>
           <Row className="w-100 mt-5">
@@ -234,7 +261,7 @@ const Product = () => {
             <tbody className="text-center user-tbody">
               {productDtoS && productDtoS.map((item, i) =>
                 <tr key={item.id}>
-                  <td>{i + 1}</td>
+                  <td>{(currentPage * 10) + (i + 1)}</td>
                   <td>{item.name}</td>
                   <td>{item.idNumber}</td>
                   <td>{item.transport}</td>
@@ -266,6 +293,20 @@ const Product = () => {
               )}
             </tbody>
           </Table>
+
+          <div className='mb-5 mt-5'>
+            <ReactPaginate className="navigation"
+              breakLabel="..."
+              nextLabel=">"
+              onPageChange={handelPageClick}
+              pageRangeDisplayed={5}
+              pageCount={totalPage}
+              previousLabel="<"
+              renderOnZeroPageCount={null}
+              nextClassName='nextBtn'
+              previousClassName='prevBtn'
+            />
+          </div>
 
           {/* add product modal */}
           <Modal isOpen={addproductModal} scrollable centered size='lg'>
@@ -300,10 +341,8 @@ const Product = () => {
                 <option value="ARRIVED">ARRIVED</option>
                 <option value="NOT_CAME_OUT">NOT_CAME_OUT</option>
               </select>
-
               {/* yandex maps */}
               <Xarita />
-
             </ModalBody>
             <ModalFooter>
               <Button
@@ -355,10 +394,8 @@ const Product = () => {
                 <option value="ARRIVED">ARRIVED</option>
                 <option value="NOT_CAME_OUT">NOT_CAME_OUT</option>
               </select>
-
               {/* yandex maps */}
               <XaritaEdit latitude={productEdit.latitude} longitude={productEdit.longitude} />
-
             </ModalBody>
             <ModalFooter>
               <Button
@@ -374,7 +411,7 @@ const Product = () => {
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                 }}
                 className='px-4 fw-bolder'
-                color='primary'>Edit</Button>
+                color='primary'>Save</Button>
             </ModalFooter>
           </Modal>
 
