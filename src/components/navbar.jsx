@@ -18,7 +18,8 @@ const NavbarAdmin = () => {
                     alignItems: "center",
                     background: "#5AA0D2",
                     position: "sticky",
-                    top: "0"
+                    top: "0",
+                    zIndex: "20"
                 }}>
                 <img src={logo} alt="brand" className='admin-nav' width="250" />
                 <div
