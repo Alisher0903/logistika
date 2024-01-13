@@ -114,8 +114,8 @@ const Product = () => {
       <NavbarAdmin />
       <div className="productTable">
         <Container>
-          <h1 className='text-center mb-4'>Product List</h1>
-          <h2 className=" text-center px-2 font-semibold text-infoColor leading-7">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae itaque sit, eius assumenda id inventore quibusdam consectetur voluptatibus adipisci facilis laboriosam doloremque libero laborum ad fugiat sed voluptate autem rem.</h2>
+          <h1 className='text-center mb-4 text-light'>Product List</h1>
+          <h2 className=" text-center px-2 font-semibold admin-product-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae itaque sit, eius assumenda id inventore quibusdam consectetur voluptatibus adipisci facilis laboriosam doloremque libero laborum ad fugiat sed voluptate autem rem.</h2>
           <Button
             className="addBtnClass mt-4"
             color='primary'
@@ -124,7 +124,7 @@ const Product = () => {
             style={{
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
             }}
-            className='w-25 float-end mt-4' placeholder='🔍Search..' />
+            className='admin-search float-end mt-4' placeholder='🔍Search..' />
 
           <Row className="w-100 mt-5">
             <Col className="col-12 col-md-6 pe-0 pe-md-4">
@@ -155,7 +155,7 @@ const Product = () => {
                 <p style={{ marginBottom: "0" }}>{userGetMe.phoneNumber}</p>
               </div>
             </Col>
-            <Col className="col-12 col-md-6 mt-4 mt-md-0 ps-0 pe-0 ps-md-4">
+            <Col className="col-12 col-md-6 mt-4 mt-md-0 pe-0 ps-md-4">
               <div style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -191,8 +191,8 @@ const Product = () => {
               marginTop: "3rem"
             }}
             outline
+            responsive
             striped
-            scrollable
             hover>
             <thead className="table-dark">
               <tr className="text-center">
@@ -230,10 +230,10 @@ const Product = () => {
                   </td>
                   <td>
                     <Button
-                    onClick={() => {
-                      setProductEdit(item);
-                      openProductLocModal();
-                    }}
+                      onClick={() => {
+                        setProductEdit(item);
+                        openProductLocModal();
+                      }}
                       color="info"
                       className="px-4 py-1 my-1"
                       outline>Location</Button>

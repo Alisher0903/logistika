@@ -72,6 +72,10 @@
     width: 30% !important;
 }
 
+.admin-product-text {
+    font-size: 1.3rem;
+}
+
 @media (max-width: 500px) {
     .admin-search {
         width: 50% !important;
@@ -79,5 +83,10 @@
 
     .admin-nav {
         width: 170px !important;
+    }
+
+    .admin-product-text {
+        font-size: 1rem;
+        line-height: 17px;
     }
 }
