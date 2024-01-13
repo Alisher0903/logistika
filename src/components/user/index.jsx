@@ -173,7 +173,7 @@ const User = () => {
             className='mt-5 tableHead'>
             <thead className='table-dark bordered tablehead'>
               <tr className='text-uppercase text-center text-success px-4 py-4'>
-                <th scope='col'>Id</th>
+                <th scope='col'>№</th>
                 <th scope='col'>Name</th>
                 <th scope='col'>Id Number</th>
                 <th scope='col'>Phone Number</th>
