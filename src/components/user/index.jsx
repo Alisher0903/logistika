@@ -47,6 +47,16 @@ const User = () => {
       .catch(() => console.log("user kelmadi"))
   }
 
+  const searchUser = () => {
+    let searchVal = byIdObj("searchIn").value;
+    if (!!searchVal) {
+      axios.get(url + "user/search?data=" + searchVal, "", config)
+        .then(res => setUser(res.data.body))
+        .catch(() => toast.error("Siz qidirgan ma'lumot topilmadi ❌"))
+    }
+    else getUser();
+  }
+
   // add user
   function addUser() {
     let roles = {
@@ -87,6 +97,7 @@ const User = () => {
         .catch(() => setLoading(false))
     }
   }
+
 
   // edit user
   function editUser() {
@@ -130,14 +141,27 @@ const User = () => {
         <Container>
           <h1 className='text-center text-white'>User List</h1>
           <Button
+
             className='addBtnClass'
             color='primary'
             onClick={openAddModal}>Add User</Button>
           <Input
+            id='searchIn'
+            onChange={searchUser}
             style={{
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
             }}
             className='w-25 float-end' placeholder='🔍Search..' />
+          {/* <Button
+            onClick={searchUser}
+            id='inputBtn'
+            className='btn-clas px-4 py-3 float-end'
+            style={{
+
+
+              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
+            }}
+          ></Button> */}
           <Table
             style={{
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
@@ -146,14 +170,14 @@ const User = () => {
             outline
             striped
             hover
-            className='mt-5'>
-            <thead className='table-dark'>
-              <tr className='text-center'>
-                <th>#</th>
-                <th>Name</th>
-                <th>Id Number</th>
-                <th>Phone Number</th>
-                <th>Password</th>
+            className='mt-5 tableHead'>
+            <thead className='table-dark bordered tablehead'>
+              <tr className='text-uppercase text-center text-success px-4 py-4'>
+                <th scope='col'>Id</th>
+                <th scope='col'>Name</th>
+                <th scope='col'>Id Number</th>
+                <th scope='col'>Phone Number</th>
+                <th scope='col'>Password</th>
                 <th colSpan={2}>Action</th>
               </tr>
             </thead>

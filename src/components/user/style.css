@@ -10,6 +10,7 @@
     vertical-align: middle;
 }
 
+
 .userTable h1 {
     font-weight: 700;
     letter-spacing: 1px;
@@ -58,4 +59,10 @@
     font-size: 900;
     font-size: 1.1rem;
     font-weight: 700;
+}
+.tableHead{
+    border-radius: 30px;
+    border: 1px solid white;
+    border-spacing: 1px;
+    border-top-left-radius: 10px
 }
