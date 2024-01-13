@@ -49,6 +49,7 @@ const Product = () => {
       .catch(() => console.log("getMe kelmadi"))
   }
 
+  // add product
   const addProduct = async () => {
     let latitude = sessionStorage.getItem("lat")
     let longitude = sessionStorage.getItem("long")
