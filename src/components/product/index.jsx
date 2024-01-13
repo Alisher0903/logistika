@@ -43,6 +43,9 @@ const Product = () => {
   }
 
   const addProduct = async () => {
+    let latitude = sessionStorage.getItem("lat")
+    let longitude = sessionStorage.getItem("long")
+    let address = sessionStorage.getItem("address")
     let addData = {
       id: 0,
       idNumber: userGetMe.idNumber,
@@ -51,9 +54,9 @@ const Product = () => {
       transport: byIdObj("transport").value,
       measure: byIdObj("measure").value,
       productStatus: byIdObj("productStatus").value,
-      latitude: 0,
-      longitude: 0,
-      address: byIdObj("address").value
+      latitude: latitude,
+      longitude: longitude,
+      address: address
     }
     let userId = sessionStorage.getItem("userId");
     await axios.post(url + "product?id=" + userId, addData, config)
@@ -227,8 +230,6 @@ const Product = () => {
                 <option value="ARRIVED">ARRIVED</option>
                 <option value="NOT_CAME_OUT">NOT_CAME_OUT</option>
               </select>
-              <Label className="mb-0 ms-1 mt-3" for="address">Address</Label>
-              <Input type="text" className="mb-4" id="address" placeholder="Address" />
 
               {/* yandex maps */}
               <Xarita />
