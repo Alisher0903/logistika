@@ -76,7 +76,7 @@ const Login = () => {
                     bottom: "7.3rem",
                   }}
                   width="25"
-                  color='white' />
+                  color='black' />
                 :
                 <Icon
                   onClick={() => {
@@ -88,7 +88,7 @@ const Login = () => {
                     right: "1rem",
                     bottom: "7.3rem",
                   }}
-                  color="white"
+                  color="black"
                   width="25" />
               }
               <div className="login_inputBox">
