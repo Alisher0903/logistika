@@ -19,11 +19,13 @@ import "./style.css";
 import { toast } from "react-toastify";
 import Xarita from "../map/Xarita";
 import XaritaEdit from "../map/Xarita_edit";
+import LocationE from "../location/Location";
 
 const Product = () => {
 
   const [addproductModal, setProductModal] = useState(false);
   const [editProductModal, setEditProductModal] = useState(false);
+  const [productLoc, setProductLoc] = useState(false);
   const [userGetMe, setUserGetMe] = useState([]);
   const [productDtoS, setProductDtoS] = useState([]);
   const [productEdit, setProductEdit] = useState([]);
@@ -35,6 +37,7 @@ const Product = () => {
 
   const openProductModal = () => setProductModal(!addproductModal);
   const openEditProductModal = () => setEditProductModal(!editProductModal);
+  const openProductLocModal = () => setProductLoc(!productLoc);
 
   const getProduct = () => {
     let userId = sessionStorage.getItem("userId")
@@ -105,8 +108,6 @@ const Product = () => {
         toast.error("Error product saved❌")
       })
   }
-
-  // console.log(productEdit);
 
   return (
     <>
@@ -230,6 +231,10 @@ const Product = () => {
                   </td>
                   <td>
                     <Button
+                    onClick={() => {
+                      setProductEdit(item);
+                      openProductLocModal();
+                    }}
                       color="info"
                       className="px-4 py-1 my-1"
                       outline>Location</Button>
@@ -348,6 +353,14 @@ const Product = () => {
                 className='px-4 fw-bolder'
                 color='primary'>Save</Button>
             </ModalFooter>
+          </Modal>
+
+          {/* location modal */}
+          <Modal fullscreen isOpen={productLoc}>
+            <ModalHeader toggle={openProductLocModal}>Product Location</ModalHeader>
+            <ModalBody>
+              <LocationE latitude={productEdit.latitude} longitude={productEdit.longitude} />
+            </ModalBody>
           </Modal>
         </Container>
       </div>
