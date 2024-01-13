@@ -9,6 +9,18 @@ function Xarita() {
         setCoordinates(coords);
         sessionStorage.setItem("lat", coords[0])
         sessionStorage.setItem("long", coords[1])
+
+        const apiKey = '1248def2-c2d9-4353-90a7-01b7e5703e21';
+
+        const geocodeUrl = `https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${apiKey}&geocode=${coords[1]},${coords[0]}`;
+
+        fetch(geocodeUrl)
+            .then(response => response.json())
+            .then(data => {
+                const address = data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.text;
+                sessionStorage.setItem("address", address)
+            })
+            .catch(error => console.error('Xatolik yuz berdi:', error));
     };
 
     return (
@@ -16,12 +28,12 @@ function Xarita() {
             <div className='map-box'>
                 <YMaps>
                     <Map
-                        defaultState={{ center: [41.311151, 69.279737], zoom: 8 }}
+                        defaultState={{ center: [41.311151, 69.279737], zoom: 8, }}
                         width="100%"
                         height="100%"
                         onClick={handleClick}
                     >
-                        <Placemark defaultGeometry={{ center: [41.311151, 69.279737], zoom: 8 }} geometry={coordinates} />
+                        <Placemark geometry={coordinates} />
                     </Map>
                 </YMaps>
             </div>
