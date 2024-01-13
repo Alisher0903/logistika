@@ -53,7 +53,7 @@ const User = () => {
     if (!!searchVal) {
       axios.get(url + "user/search?data=" + searchVal, "", config)
         .then(res => setUser(res.data.body))
-        .catch(() => toast.error("Siz qidirgan ma'lumot topilmadi ❌"))
+        .catch(() => toast.error("The information you were looking for was not found ❌"))
     }
     else getUser();
   }
@@ -205,7 +205,7 @@ const User = () => {
                         className='px-4 py-1 my-1'
                         onClick={() => {
                           goProduct();
-                          sessionStorage.setItem("userId", item.id)
+                          sessionStorage.setItem("id", item.id)
                         }}>
                         Info
                       </Button>
