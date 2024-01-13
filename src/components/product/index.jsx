@@ -18,19 +18,23 @@ import NavbarAdmin from "../navbar";
 import "./style.css";
 import { toast } from "react-toastify";
 import Xarita from "../map/Xarita";
+import XaritaEdit from "../map/Xarita_edit";
 
 const Product = () => {
 
   const [addproductModal, setProductModal] = useState(false);
+  const [editProductModal, setEditProductModal] = useState(false);
   const [userGetMe, setUserGetMe] = useState([]);
   const [productDtoS, setProductDtoS] = useState([]);
+  const [productEdit, setProductEdit] = useState([]);
 
   useEffect(() => {
     setConfig();
     getProduct();
   }, []);
 
-  const openProductModal = () => setProductModal(!addproductModal)
+  const openProductModal = () => setProductModal(!addproductModal);
+  const openEditProductModal = () => setEditProductModal(!editProductModal);
 
   const getProduct = () => {
     let userId = sessionStorage.getItem("userId")
@@ -64,11 +68,45 @@ const Product = () => {
         toast.success("Successfully product saved✔")
         addproductModal();
         getProduct();
+        console.log(addData);
       })
       .catch(() => {
+        console.log(addData);
         toast.error("Error product saved❌")
       })
   }
+
+  // edit product
+  const editProduct = async () => {
+    let latitude = sessionStorage.getItem("lat")
+    let longitude = sessionStorage.getItem("long")
+    let address = sessionStorage.getItem("address")
+    let editData = {
+      id: productEdit.id,
+      idNumber: userGetMe.idNumber,
+      name: byIdObj("name").value,
+      measureCount: byIdObj("measureCount").value,
+      transport: byIdObj("transport").value,
+      measure: byIdObj("measure").value,
+      productStatus: byIdObj("productStatus").value,
+      latitude: latitude,
+      longitude: longitude,
+      address: address
+    }
+    await axios.post(url + "product/" + productEdit.id, editData, config)
+      .then(() => {
+        toast.success("Successfully product edit")
+        addproductModal();
+        getProduct();
+        console.log(editData);
+      })
+      .catch(() => {
+        console.log(editData);
+        toast.error("Error product saved❌")
+      })
+  }
+
+  // console.log(productEdit);
 
   return (
     <>
@@ -182,6 +220,10 @@ const Product = () => {
                   <td>{item.address}</td>
                   <td>
                     <Button
+                      onClick={() => {
+                        setProductEdit(item);
+                        openEditProductModal();
+                      }}
                       color="warning"
                       className="px-4 py-1 my-1"
                       outline>Edit</Button>
@@ -223,7 +265,7 @@ const Product = () => {
                 <option value="TRAIN">TRAIN</option>
               </select>
               <Label className="mb-0 ms-1 mt-3" for="productStatus">Product Status</Label>
-              <select className='form-select' id="productStatus">
+              <select className='form-select mb-4' id="productStatus">
                 <option selected disabled>Product Status</option>
                 <option value="CAME_OUT">CAME_OUT</option>
                 <option value="ON_THE_WAY">ON_THE_WAY</option>
@@ -233,7 +275,7 @@ const Product = () => {
 
               {/* yandex maps */}
               <Xarita />
-              
+
             </ModalBody>
             <ModalFooter>
               <Button
@@ -249,6 +291,62 @@ const Product = () => {
                 }}
                 className='px-4 fw-bolder'
                 color='primary' onClick={addProduct}>Save</Button>
+            </ModalFooter>
+          </Modal>
+
+          {/* edit modal */}
+          <Modal isOpen={editProductModal} scrollable centered size='lg'>
+            <ModalHeader toggle={openEditProductModal} className="fs-5">
+              <span className="fs-4 fw-bold me-2">Edit Product</span>
+            </ModalHeader>
+            <ModalBody>
+              <Label className="mb-0 ms-1" for="name">Name</Label>
+              <Input type="text" id="name" placeholder="Name" defaultValue={productEdit && productEdit.name} />
+              <Label className="mb-0 ms-1 mt-3" for="measure">Measure</Label>
+              <select className='form-select' id="measure">
+                <option selected disabled>{productEdit && productEdit.measure}</option>
+                <option value="KG">KG</option>
+                <option value="PIECE">PIECE</option>
+                <option value="KUB">KUB</option>
+                <option value="L">L</option>
+              </select>
+              <Label className="mb-0 ms-1 mt-3" for="measureCount">Measure Count</Label>
+              <Input type="text" id="measureCount" placeholder="Measure Count" defaultValue={productEdit && productEdit.measureCount} />
+              <Label className="mb-0 ms-1 mt-3" for="transport">Transport</Label>
+              <select className='form-select' id="transport">
+                <option selected disabled>{productEdit && productEdit.transport}</option>
+                <option value="CAR">CAR</option>
+                <option value="AIRPLANE">AIRPLANE</option>
+                <option value="TRAIN">TRAIN</option>
+              </select>
+              <Label className="mb-0 ms-1 mt-3" for="productStatus">Product Status</Label>
+              <select className='form-select mb-4' id="productStatus">
+                <option selected disabled>{productEdit && productEdit.productStatus}</option>
+                <option value="CAME_OUT">CAME_OUT</option>
+                <option value="ON_THE_WAY">ON_THE_WAY</option>
+                <option value="ARRIVED">ARRIVED</option>
+                <option value="NOT_CAME_OUT">NOT_CAME_OUT</option>
+              </select>
+
+              {/* yandex maps */}
+              <XaritaEdit latitude={productEdit.latitude} longitude={productEdit.longitude} />
+
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                style={{
+                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                }}
+                className='px-4 me-3 fw-bolder'
+                color='danger'
+                onClick={openEditProductModal}>Close</Button>
+              <Button
+                onClick={editProduct}
+                style={{
+                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                }}
+                className='px-4 fw-bolder'
+                color='primary'>Save</Button>
             </ModalFooter>
           </Modal>
         </Container>
