@@ -27,7 +27,8 @@ const User = () => {
   const [editModal, setEditModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
-  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const openAddModal = () => setAddModal(!addModal)
   const openEditModal = () => setEditModal(!editModal)
@@ -42,7 +43,7 @@ const User = () => {
     axios.get(`${url}user`, config)
       .then(res => {
         setUser(res.data.object);
-        setPage(res.data.totalPage)
+        setTotalPage(res.data.totalPage)
       })
       .catch(() => console.log("user kelmadi"))
   }
@@ -126,7 +127,9 @@ const User = () => {
 
   const handelPageClick = (event) => {
     const pageNumber = event.selected;
-    axios.get(url + "user?page=" + pageNumber + "&size=10", config).then(res => {
+    setCurrentPage(pageNumber)
+    axios.get(url + "user?page=" + pageNumber + "&size=10", config)
+    .then(res => {
       setUser(res.data.object)
     });
   }
@@ -178,7 +181,7 @@ const User = () => {
               <tbody className='text-center user-tbody'>
                 {users && users.map((item, i) =>
                   <tr key={item.id}>
-                    <td>{i + 1}</td>
+                    <td>{(currentPage * 10) + (i + 1)}</td>
                     <td>{item.name}</td>
                     <td>{item.idNumber}</td>
                     <td>{item.phoneNumber}</td>
@@ -220,7 +223,7 @@ const User = () => {
               nextLabel=">"
               onPageChange={handelPageClick}
               pageRangeDisplayed={5}
-              pageCount={page}
+              pageCount={totalPage}
               previousLabel="<"
               renderOnZeroPageCount={null}
               nextClassName='nextBtn'
