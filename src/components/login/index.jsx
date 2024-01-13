@@ -88,7 +88,7 @@ const Login = () => {
                     right: "1rem",
                     bottom: "7.3rem",
                   }}
-                  color="black"
+                  color="white"
                   width="25" />
               }
               <div className="login_inputBox">
