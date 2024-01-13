@@ -5,6 +5,8 @@ import {
   Col,
   Container,
   Input,
+  InputGroup,
+  InputGroupText,
   Label,
   Modal,
   ModalBody,
@@ -49,12 +51,30 @@ const Product = () => {
       .catch(() => console.log("getMe kelmadi"))
   }
 
+  // Admin search 
+
+  const searchProduct = () => {
+    let searchVal = byIdObj("searchIn").value;
+    if (!!searchVal) {
+      axios.get(url + "product/admin/search?data=" + searchVal, "", config)
+        .then(res => setProductDtoS(res.data.body))
+        .catch(() => toast.error("The information you were looking for was not found ❌"))
+    }
+    else getProduct();
+  }
+  function checkKeyPress(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      byIdObj("inputBtn").click();
+    }
+  }
+
   // add product
   const addProduct = async () => {
     let latitude = sessionStorage.getItem("lat")
     let longitude = sessionStorage.getItem("long")
     let address = sessionStorage.getItem("address")
-    let addData = {
+    let addData = [{
       id: 0,
       idNumber: userGetMe.idNumber,
       name: byIdObj("name").value,
@@ -65,19 +85,21 @@ const Product = () => {
       latitude: latitude,
       longitude: longitude,
       address: address
-    }
-    let userId = sessionStorage.getItem("userId");
-    await axios.post(url + "product?id=" + userId, addData, config)
+    }];
+    let id = sessionStorage.getItem("id");
+    console.log(id);
+    await axios.post(`${url}product?userId=${id}`, addData, config)
       .then(() => {
         toast.success("Successfully product saved✔")
         addproductModal();
         getProduct();
         console.log(addData);
       })
-      .catch(() => {
-        console.log(addData);
+      .catch(err => {
+        console.log(err);
         toast.error("Error product saved❌")
       })
+      console.log(addData);
   }
 
   // edit product
@@ -117,16 +139,20 @@ const Product = () => {
         <Container>
           <h1 className='text-center mb-4 text-light'>Product List</h1>
           <h2 className=" text-center px-2 font-semibold admin-product-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae itaque sit, eius assumenda id inventore quibusdam consectetur voluptatibus adipisci facilis laboriosam doloremque libero laborum ad fugiat sed voluptate autem rem.</h2>
-          <Button
-            className="addBtnClass mt-4"
-            color='primary'
-            onClick={openProductModal}>Add Product</Button>
-          <Input
-            style={{
-              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
-            }}
-            className='admin-search float-end mt-4' placeholder='🔍Search..' />
-
+          <div className="d-flex justify-content-between align-items-center">
+            <Button
+              className="addBtnClass mt-4"
+              color='primary'
+              onClick={openProductModal}>Add Product</Button>
+            <InputGroup className='admin-search'>
+              <Input
+                placeholder='Search...'
+              />
+              <InputGroupText
+                onClick={searchProduct}
+              >🔎</InputGroupText>
+            </InputGroup>
+          </div>
           <Row className="w-100 mt-5">
             <Col className="col-12 col-md-6 pe-0 pe-md-4">
               <div style={{
