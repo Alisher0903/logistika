@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import NavbarLogOut from '../navbarUser';
-import { Link } from 'react-router-dom';
-import { Button, Container, Modal, ModalBody, ModalHeader, Table } from 'reactstrap';
+import {
+  Button,
+  Container,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Table
+} from 'reactstrap';
 import axios from 'axios';
 import { config, setConfig, url } from '../api';
 import LocationE from '../location/Location';
-
 
 const About = () => {
   const [about, setAbout] = useState([]);
@@ -22,7 +27,7 @@ const About = () => {
   const getAbout = () => {
     axios.get(url + "product/user", config)
       .then(res => setAbout(res.data.body))
-      .catch(() => console.log("about kelmadi "))
+      .catch(() => console.log("about kelmadi"))
   }
 
   return (
@@ -40,7 +45,7 @@ const About = () => {
             className='mt-5'>
             <thead className='table-dark'>
               <tr className='text-center'>
-                <th>#</th>
+                <th>№</th>
                 <th>Name</th>
                 <th>Id Number</th>
                 <th>Measure</th>

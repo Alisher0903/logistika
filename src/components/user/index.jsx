@@ -141,7 +141,6 @@ const User = () => {
         <Container>
           <h1 className='text-center text-white'>User List</h1>
           <Button
-
             className='addBtnClass'
             color='primary'
             onClick={openAddModal}>Add User</Button>
@@ -152,16 +151,6 @@ const User = () => {
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
             }}
             className='w-25 float-end' placeholder='🔍Search..' />
-          {/* <Button
-            onClick={searchUser}
-            id='inputBtn'
-            className='btn-clas px-4 py-3 float-end'
-            style={{
-
-
-              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
-            }}
-          ></Button> */}
           <Table
             style={{
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
