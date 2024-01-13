@@ -36,12 +36,15 @@ const About = () => {
       <div className='userTable'>
         <Container>
           <h1 className='text-center text-white'>Product List</h1>
-          <h3 className='text-center px-2 py-3 fs-2 items-center text-dark'>Our services include a comprehensive set of activities <br /> to ensure efficient storage and supply of goods.</h3>
+          <h3 className='text-center px-0 px-sm-2 py-3 fs-2 items-center text-dark'>
+            Our services include a comprehensive set of activities
+            <br className='d-none d-md-inline' /> to ensure efficient storage and supply of goods.
+          </h3>
           <Table
             hover
             outline
             striped
-            scrollable
+            responsive
             className='mt-5'>
             <thead className='table-dark'>
               <tr className='text-center'>
